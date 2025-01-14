@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tableau Chat</title>
+</head>
+<body>
+    <div>
+        <h1>Ask a Question</h1>
+        <input type="text" id="query" placeholder="Type your question here..." />
+        <button onclick="sendQuery()">Send</button>
+        <p id="response"></p>
+    </div>
+
+    <script>
+        async function sendQuery() {
+            const query = document.getElementById('query').value;
+            const responseElement = document.getElementById('response');
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/process-query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                const data = await response.json();
+                responseElement.innerText = data.answer;
+            } catch (error) {
+                responseElement.innerText = "Error connecting to the server.";
+            }
+        }
+    </script>
+</body>
+</html>
